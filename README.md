@@ -12,6 +12,8 @@ Verilog implementation of a Number Theoretic Transform accelerator for polynomia
 
 ## Architecture
 
+![NTT Hardware Block Diagram](block_diagram.png)
+
 Iterative design using a single butterfly unit reused across 3 stages (12 clock cycles total).
 
 **Butterfly** — Gentleman-Sande (DIF):
