@@ -113,9 +113,3 @@ Test 1: PASS
 | `%` for mod | Simple for q=17 | Needs Barrett/Montgomery for real primes |
 | DIF (not DIT) | Natural input order | Requires output bit-reversal |
 
-## Extensions
-
-- **Inverse NTT** — use ω⁻¹, scale by n⁻¹ mod q
-- **Pipelining** — register stages inside butterfly for higher Fmax
-- **Larger sizes** — dual-port BRAM, parameterized counters
-- **Modular multiply** — Barrett or Montgomery reduction for cryptographic primes
