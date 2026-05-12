@@ -12,7 +12,29 @@ Verilog implementation of a Number Theoretic Transform accelerator for polynomia
 
 ## Architecture
 
-![NTT Hardware Block Diagram](block_diagram.png)
+```text
+                    ┌─────────────────────────────────────┐
+   in0..in7 ───────►│           8×5-bit Register File      │◄──── u, v writeback
+   (start)          └────────┬──────────┬─────────────────┘
+                             │ a        │ b
+                    ┌────────▼──────────▼────────┐
+                    │     BUTTERFLY UNIT          │
+                    │  ┌─────┐ ┌─────┐ ┌──────┐  │
+                    │  │ ADD │ │ SUB │ │ MULT │  │◄── tw (from ROM)
+                    │  └──┬──┘ └──┬──┘ └──┬───┘  │
+                    │     u      diff    v       │
+                    └────────────────────────────┘
+                                 ▲
+                    ┌────────────┴────────────┐
+                    │    TWIDDLE ROM (case)    │◄── stage, bfly
+                    └─────────────────────────┘
+                                 ▲
+                    ┌────────────┴────────────┐
+                    │    FSM CONTROL UNIT      │
+                    │  stage_ctr  bfly_ctr     │◄── clk, rst_n, start
+                    │  addr_gen   state        │───► done
+                    └─────────────────────────┘
+```
 
 Iterative design using a single butterfly unit reused across 3 stages (12 clock cycles total).
 
