@@ -1,4 +1,5 @@
 # 8-Point NTT Hardware Accelerator
+**Author: Hajjy Ismail**
 
 Verilog implementation of a Number Theoretic Transform accelerator for polynomial multiplication in finite fields.
 
@@ -9,6 +10,12 @@ Verilog implementation of a Number Theoretic Transform accelerator for polynomia
 | n | 8 | Transform size |
 | q | 17 | Prime modulus |
 | ω | 9 | Primitive 8th root of unity mod 17 |
+
+## Design Explanation
+
+This design implements an 8-point NTT over modulo q = 17 using a Gentleman-Sande DIF structure. A single butterfly unit is reused across all 3 stages. The FSM controls the stage counter, butterfly counter, address generation, twiddle selection, and writeback.
+
+The design uses in-place memory updates to reduce storage cost. Twiddle factors are precomputed and stored in a small combinational ROM. Since q = 17 is small, the design uses simple modulo reduction, but for larger cryptographic primes Barrett or Montgomery reduction would be more appropriate.
 
 ## Architecture
 
@@ -70,6 +77,8 @@ v = ((a - b) · ω^k) mod q
 
 Requires [Icarus Verilog](http://iverilog.icarus.com/).
 
+### Running the Simulation
+
 ```bash
 # Compile and run
 iverilog -o sim/ntt_sim.vvp rtl/ntt_8.v tb/tb_ntt_8.v
@@ -78,6 +87,21 @@ vvp sim/ntt_sim.vvp
 # Or use the scripts
 bash sim/run.sh       # Linux/Mac
 sim\run.bat           # Windows
+```
+
+### Simulation Result
+
+Command:
+```bash
+iverilog -o sim/ntt_sim.vvp rtl/ntt_8.v tb/tb_ntt_8.v
+vvp sim/ntt_sim.vvp
+```
+
+Result:
+```text
+Test 0: PASS
+Test 1: PASS
+2 passed, 0 failed
 ```
 
 ## Trade-offs
